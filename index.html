@@ -30,7 +30,8 @@
   /* 리모컨 조작 시 발생할 수 있는 아웃라인 제거 */
   :focus { outline: none !important; }
   .screen{
-    width:100vw;height:100vh;
+    width:100%;height:100%;
+    min-width:0;min-height:0;
     display:flex;
     flex-direction:column;
     background:var(--navy-deep);
@@ -157,79 +158,108 @@
     100%{ transform:translateX(-50%); }
   }
 
-  /* ---------- 4. 배뇨건강 수칙 카드 그리드 (공간 자동 조절) ---------- */
+  /* ---------- 4. 배뇨건강 수칙 카드 슬라이드 (자동 전환) ---------- */
   .health-zone{
-    flex: 1 !important; /* 남는 공간을 채워서 하단바를 아래로 밀어냄 */
+    flex: 1 !important;
+    min-width: 0;
+    min-height: 0;
     background:var(--navy-deep);
-    padding:2vh 3vw;
+    position: relative;
+    overflow:hidden;
     display:flex;
     flex-direction:column;
-    gap:1.6vh;
-    overflow:hidden;
   }
-  .health-zone.info-only{ display:none; } /* 남는 공간이 부족해 카드가 밀릴 경우 통째로 숨김 */
+  .slide-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
+  .info-slide {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    padding: clamp(6px, 1.5vh, 18px) clamp(10px, 3vw, 48px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(5px, 1.2vh, 14px);
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    pointer-events: none;
+  }
+  .info-slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .health-zone.info-only{ display:none; }
   .health-zone .zone-title{
     color:var(--gold);
-    font-size:1.6vh;
-    font-weight:800;
-    letter-spacing:0.5px;
-  }
-  .health-scroll-wrap{
-    flex:1 1 auto;
-    overflow:hidden;
-    position:relative;
-  }
-  .health-track{
-    display:flex;
-    flex-direction:column;
-    gap:1.6vh;
-  }
-  .health-track.scrolling{
-    animation:health-scroll-up var(--scroll-duration, 14s) linear infinite;
-    /* GPU 가속 유도 */
-    will-change: transform;
-    transform: translateZ(0);
-  }
-  @keyframes health-scroll-up{
-    0%{ transform:translateY(0); }
-    100%{ transform:translateY(-50%); }
+    font-size: min(1.8vh, 20px);
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5vh;
   }
   .health-grid{
-    flex:0 0 auto;
-    display:grid;
-    grid-template-columns:repeat(3, 1fr);
-    grid-template-rows:repeat(2, minmax(7vh, auto));
-    gap:1.4vh 1.4vw;
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: clamp(4px, 1.1vh, 12px) clamp(6px, 1.4vw, 22px);
+    min-width: 0;
+    min-height: 0;
+    flex: 1 1 auto;
   }
   .health-card{
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(201,169,97,0.25);
-    border-radius:1.2vh;
-    display:flex;
-    align-items:center;
-    gap:1.2vw;
-    padding:0 1.4vw;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(201,169,97,0.25);
+    border-radius: 1.2vh;
+    display: flex;
+    align-items: center;
+    gap: clamp(6px, 1.2vw, 18px);
+    padding: clamp(7px, 1.2vh, 14px) clamp(10px, 1.6vw, 22px);
+    min-width: 0;
+    min-height: 0;
   }
   .health-card .icon{
-    flex:0 0 auto;
-    font-size:3.4vh;
-    line-height:1;
+    flex: 0 0 auto;
+    font-size: min(3.4vh, 32px);
+    line-height: 1;
+    filter: grayscale(1) saturate(0.2);
+    opacity: 0.9;
   }
-  .health-card .txt{ display:flex;flex-direction:column;gap:0.3vh; }
-  .health-card .txt .h{ color:#fff; font-size:1.5vh; font-weight:700; }
-  .health-card .txt .d{ color:#aab4c4; font-size:1.2vh; font-weight:500; }
+  .health-card .txt{ display: flex; flex-direction: column; gap: clamp(2px, 0.4vh, 5px); min-width: 0; }
+  .health-card .txt .h{ color: #fff; font-size: clamp(9px, 1.6vh, 18px); font-weight: 700; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .health-card .txt .d{ color: #aab4c4; font-size: clamp(8px, 1.3vh, 14px); font-weight: 500; line-height: 1.35; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+
+  /* 좁은 화면에서도 3열을 유지하고 간격만 축소 */
+  @media (max-width: 700px){
+    .health-grid{
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      gap: 3px 4px;
+    }
+    .health-card{
+      gap: 4px;
+      padding: 5px 4px;
+    }
+    .health-card .icon{
+      font-size: clamp(12px, 3.4vh, 22px);
+    }
+  }
 
   /* ---------- 5. 하단 정보바 (화면 하단 정렬 최적화) ---------- */
   .bottombar {
     margin-top: auto; /* 상단 요소들을 밀어내고 최하단에 배치 */
-    flex: 0 0 10vh !important;
-    max-height: 110px;
-    min-height: 80px;
+    flex: 0 1 clamp(64px, 10vh, 110px) !important;
+    height: clamp(64px, 10vh, 110px);
+    min-height: 0;
+    min-width: 0;
     background: var(--navy-deep);
     display: flex;
     align-items: center;
     justify-content: space-around;
-    padding: 0 2vw;
+    padding: 0 clamp(8px, 2vw, 28px);
     border-top: 1px solid rgba(201,169,97,0.35);
     gap: 1vw;
   }
@@ -279,8 +309,9 @@
   .weather-box .dust b { color: #fff; font-size: min(2.2vw, 18px); font-weight: 600; }
 
   .naver-box {
-    flex: 1;
-    max-width: 38vw;
+    flex: 1 1 clamp(140px, 38vw, 520px);
+    min-width: 0;
+    max-width: min(38vw, 520px);
     display: flex;
     align-items: center;
     background: #fff;
@@ -299,7 +330,8 @@
   }
   .naver-box .n-query {
     flex: 1;
-    font-size: min(3.5vw, 26px);
+    min-width: 0;
+    font-size: clamp(10px, 3.5vw, 26px);
     font-weight: 800; color: var(--ink);
     text-align: center;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -338,18 +370,43 @@
       </div>
     </section>
 
-    <!-- 4. 배뇨건강 수칙 카드 (남는 공간 채움) -->
+    <!-- 4. 정보 슬라이드 존 (3.5초 간격 전환) -->
     <section class="health-zone" id="healthZone">
-      <div class="zone-title">배뇨 건강 수칙</div>
-      <div class="health-scroll-wrap" id="healthScrollWrap">
-        <div class="health-track" id="healthTrack">
-          <div class="health-grid" id="healthGrid">
-            <div class="health-card"><span class="icon">💧</span><div class="txt"><span class="h">물 충분히 마시기</span><span class="d">하루 1.5~2L 섭취 권장</span></div></div>
-            <div class="health-card"><span class="icon">🚻</span><div class="txt"><span class="h">소변 참지 않기</span><span class="d">방광 건강을 위한 습관</span></div></div>
-            <div class="health-card"><span class="icon">⏰</span><div class="txt"><span class="h">규칙적인 배뇨</span><span class="d">일정한 간격으로 배뇨하기</span></div></div>
-            <div class="health-card"><span class="icon">☕</span><div class="txt"><span class="h">카페인·음주 줄이기</span><span class="d">방광 자극을 줄여줍니다</span></div></div>
-            <div class="health-card"><span class="icon">🧘</span><div class="txt"><span class="h">골반저 운동</span><span class="d">케겔운동으로 요실금 예방</span></div></div>
-            <div class="health-card"><span class="icon">🩺</span><div class="txt"><span class="h">정기 검진 받기</span><span class="d">조기 발견이 가장 중요합니다</span></div></div>
+      <div class="slide-container" id="healthSlides">
+        <!-- 슬라이드 1: 중점 진료 -->
+        <div class="info-slide active">
+          <div class="zone-title">이종우 비뇨의학과 중점 진료</div>
+          <div class="health-grid">
+            <div class="health-card"><span class="icon">🔍</span><div class="txt"><span class="h">전립선 센터</span><span class="d">비대증, 전립선염, 암 정밀검사</span></div></div>
+            <div class="health-card"><span class="icon">⚡</span><div class="txt"><span class="h">요로결석 센터</span><span class="d">24시간 응급 쇄석술(ESWL)</span></div></div>
+            <div class="health-card"><span class="icon">🩸</span><div class="txt"><span class="h">혈뇨 클리닉</span><span class="d">통증 없는 연성 내시경 검사</span></div></div>
+            <div class="health-card"><span class="icon">🛡️</span><div class="txt"><span class="h">성병 클리닉</span><span class="d">곤지름, 요도염 당일 검사·치료</span></div></div>
+            <div class="health-card"><span class="icon">💧</span><div class="txt"><span class="h">배뇨장애 클리닉</span><span class="d">요실금, 과민성 방광 특화 치료</span></div></div>
+            <div class="health-card"><span class="icon">💪</span><div class="txt"><span class="h">남성 갱년기</span><span class="d">활력 증진 호르몬 보충 요법</span></div></div>
+          </div>
+        </div>
+        <!-- 슬라이드 2: 병원 특장점 -->
+        <div class="info-slide">
+          <div class="zone-title">왜 이종우 비뇨의학과인가?</div>
+          <div class="health-grid">
+            <div class="health-card"><span class="icon">🎓</span><div class="txt"><span class="h">20년 풍부한 경험</span><span class="d">누적 진료 환자 16만 명 돌파</span></div></div>
+            <div class="health-card"><span class="icon">🏥</span><div class="txt"><span class="h">대학병원급 장비</span><span class="d">10여 종의 전문 진단·치료 장비</span></div></div>
+            <div class="health-card"><span class="icon">🏃</span><div class="txt"><span class="h">원스톱 시스템</span><span class="d">당일 검사부터 결과 확인까지</span></div></div>
+            <div class="health-card"><span class="icon">👨‍⚕️</span><div class="txt"><span class="h">대표원장 직접 진료</span><span class="d">진단부터 사후관리까지 1:1 책임</span></div></div>
+            <div class="health-card"><span class="icon">🔄</span><div class="txt"><span class="h">재발 방지 특화</span><span class="d">만성 질환을 위한 전용 프로토콜</span></div></div>
+            <div class="health-card"><span class="icon">📍</span><div class="txt"><span class="h">최적의 접근성</span><span class="d">고속터미널역 8-2번 출구 앞</span></div></div>
+          </div>
+        </div>
+        <!-- 슬라이드 3: 진료 시간 안내 -->
+        <div class="info-slide">
+          <div class="zone-title">진료 시간 및 예약 안내</div>
+          <div class="health-grid">
+            <div class="health-card"><span class="icon">🕒</span><div class="txt"><span class="h">평일 진료</span><span class="d">AM 09:30 ~ PM 06:30</span></div></div>
+            <div class="health-card"><span class="icon">🍱</span><div class="txt"><span class="h">점심 시간</span><span class="d">PM 01:00 ~ PM 02:00</span></div></div>
+            <div class="health-card"><span class="icon">🗓️</span><div class="txt"><span class="h">토·일요일 진료</span><span class="d">AM 09:30 ~ PM 02:00</span></div></div>
+            <div class="health-card"><span class="icon">📞</span><div class="txt"><span class="h">예약 및 문의</span><span class="d">02-532-6781 (24시간 접수)</span></div></div>
+            <div class="health-card"><span class="icon">🌐</span><div class="txt"><span class="h">온라인 예약</span><span class="d">네이버 예약 편리하게 이용 가능</span></div></div>
+            <div class="health-card"><span class="icon">🅿️</span><div class="txt"><span class="h">주차 안내</span><span class="d">반포쇼핑타운 6동 주차 가능</span></div></div>
           </div>
         </div>
       </div>
@@ -483,6 +540,16 @@
 
   // ---- 시계 · 날짜 ----
   const days = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+  // ---- 정보 슬라이드 자동 전환 (3초 간격) ----
+  const slides = document.querySelectorAll('.info-slide');
+  let currentSlide = 0;
+  function nextSlide() {
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].classList.add('active');
+  }
+  setInterval(nextSlide, 3500); // 3.5초 간격 전환
+
   function updateClock(){
     const now = new Date();
     const h24 = now.getHours();
