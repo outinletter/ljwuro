@@ -106,12 +106,14 @@
     position:absolute;
     left:0;right:0;bottom:0;
     z-index:2;
-    padding:1.2vh 3vw;
-    background:linear-gradient(0deg, rgba(0,0,0,0.55), transparent);
+    padding:1.4vh 3vw 1.6vh;
+    background:linear-gradient(0deg, rgba(0,0,0,0.78), rgba(0,0,0,0.18) 75%, transparent);
     color:#fff;
-    font-size:1.5vh;
-    font-weight:600;
-    letter-spacing:0.3px;
+    font-size:clamp(13px, 1.8vh, 22px);
+    font-weight:800;
+    letter-spacing:0.4px;
+    line-height:1.3;
+    text-shadow:0 1px 2px rgba(0,0,0,0.95), 0 0 6px rgba(0,0,0,0.65);
   }
   .stage-fallback{
     position:absolute;inset:0;z-index:3;
@@ -217,7 +219,7 @@
     display: flex;
     align-items: center;
     gap: clamp(6px, 1.2vw, 18px);
-    padding: clamp(7px, 1.2vh, 14px) clamp(10px, 1.6vw, 22px);
+    padding: clamp(6px, 0.9vh, 11px) clamp(8px, 1.2vw, 16px);
     min-width: 0;
     min-height: 0;
   }
@@ -228,9 +230,9 @@
     filter: grayscale(1) saturate(0.2);
     opacity: 0.9;
   }
-  .health-card .txt{ display: flex; flex-direction: column; gap: clamp(2px, 0.4vh, 5px); min-width: 0; }
-  .health-card .txt .h{ color: #fff; font-size: clamp(9px, 1.6vh, 18px); font-weight: 700; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .health-card .txt .d{ color: #aab4c4; font-size: clamp(8px, 1.3vh, 14px); font-weight: 500; line-height: 1.35; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .health-card .txt{ display: flex; flex-direction: column; gap: clamp(2px, 0.3vh, 4px); min-width: 0; max-height: 100%; overflow: hidden; }
+  .health-card .txt .h{ color: #fff; font-size: clamp(8px, 1.35vh, 16px); font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .health-card .txt .d{ color: #aab4c4; font-size: clamp(7px, 1.05vh, 12px); font-weight: 500; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 
   /* 좁은 화면에서도 3열을 유지하고 간격만 축소 */
   @media (max-width: 700px){
@@ -241,7 +243,7 @@
     }
     .health-card{
       gap: 4px;
-      padding: 5px 4px;
+      padding: 6px 5px;
     }
     .health-card .icon{
       font-size: clamp(12px, 3.4vh, 22px);
@@ -356,7 +358,7 @@
       <video class="fg-main" id="bgVideo" autoplay muted loop playsinline>
         <source src="../../더 러너.2026.1080p.mp4" type="video/mp4">
       </video>
-      <div class="video-caption">이종우비뇨의학과의원이 함께합니다</div>
+      <div class="video-caption">이종우 비뇨의학과의원이 함께합니다</div>
       <div class="stage-fallback" id="videoFallback" style="display:none;">
         "더 러너.2026.1080p.mp4" 파일을 확인해 주세요.<br>(16:9 동영상 · 자동재생 · 무한반복)
       </div>
