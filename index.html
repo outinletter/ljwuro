@@ -209,7 +209,7 @@
   .health-zone.info-only{ display:none; }
   .health-zone .zone-title{
     color:var(--gold);
-    font-size: min(1.8vh, 20px);
+    font-size: clamp(10px, 1.35vh, 15px);
     font-weight: 800;
     letter-spacing: 0.5px;
     margin-bottom: 0.5vh;
@@ -242,7 +242,7 @@
     filter: grayscale(1) saturate(0.2);
     opacity: 0.9;
   }
-  .health-card .txt{ display: flex; flex-direction: column; justify-content: center; gap: clamp(2px, 0.3vh, 4px); min-width: 0; max-height: 100%; overflow: hidden; }
+  .health-card .txt{ display: flex; flex-direction: column; justify-content: center; gap: clamp(2px, 0.3vh, 4px); min-width: 0; max-height: 100%; overflow: hidden; font-family: Arial, "Malgun Gothic", sans-serif; }
   .health-card .txt .h{ color: #fff; font-size: clamp(8px, 1.15vh, 14px); font-weight: 700; line-height: 1.25; white-space: normal; word-break: keep-all; overflow-wrap: break-word; }
   .health-card .txt .d{ color: #aab4c4; font-size: clamp(7px, 0.95vh, 11px); font-weight: 500; line-height: 1.3; word-break: keep-all; overflow-wrap: break-word; }
 
@@ -391,7 +391,6 @@
       <video class="fg-main" id="bgVideo" autoplay muted loop playsinline>
         <source src="../../더 러너.2026.1080p.mp4" type="video/mp4">
       </video>
-      <div class="video-caption">이종우 비뇨의학과의원이 함께합니다</div>
       <div class="stage-fallback" id="videoFallback" style="display:none;">
         "더 러너.2026.1080p.mp4" 파일을 확인해 주세요.<br>(16:9 동영상 · 자동재생 · 무한반복)
       </div>
@@ -462,9 +461,6 @@
       <div class="naver-box">
         <div class="n-mark">N</div>
         <div class="n-query">이종우비뇨의학과의원</div>
-        <div class="n-search-btn">
-          <svg viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="6.5" stroke="#fff" stroke-width="2.2"/><line x1="15.5" y1="15.5" x2="21" y2="21" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
-        </div>
       </div>
 
       <div class="info-right">
