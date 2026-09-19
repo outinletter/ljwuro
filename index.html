@@ -311,7 +311,7 @@
   .info-left .time-large {
     flex: 0 1 auto;
     min-width: 0;
-    font-size: clamp(20px, 5vw, 42px);
+    font-size: clamp(16px, 4vw, 34px);
     font-weight: 200;
     color: #fff;
     font-variant-numeric: tabular-nums;
@@ -330,9 +330,10 @@
     gap: clamp(2px, 0.4vw, 6px);
     padding-left: clamp(4px, 0.8vw, 10px);
     border-left: 1px solid rgba(255,255,255,0.15);
-    flex-shrink: 0;
+    flex: 0 1 auto;
+    min-width: 0;
   }
-  .weather-box .temp { font-size: clamp(18px, 3.5vw, 30px); color: #fff; font-weight: 200; white-space: nowrap; }
+  .weather-box .temp { font-size: clamp(15px, 3vw, 26px); color: #fff; font-weight: 200; white-space: nowrap; }
   .weather-box .w-icon {
     width: min(4vw, 30px); height: min(4vw, 30px);
     max-width: 30px; max-height: 30px;
@@ -340,13 +341,13 @@
     flex-shrink: 0;
     overflow: visible;
   }
-  .weather-box .dust { display: flex; flex-direction: column; font-size: clamp(7px, 1.1vw, 10px); color: #b8c1cf; line-height: 1.1; flex-shrink: 1; }
-  .weather-box .dust b { color: #fff; font-size: clamp(8px, 1.25vw, 11px); font-weight: 600; }
+  .weather-box .dust { display: flex; flex-direction: column; font-size: clamp(6px, 0.9vw, 8px); color: #b8c1cf; line-height: 1.1; flex: 0 1 auto; min-width: 0; }
+  .weather-box .dust b { color: #fff; font-size: clamp(7px, 1vw, 9px); font-weight: 600; }
 
   .naver-box {
-    flex: 0 1 42%;
+    flex: 0 1 38%;
     min-width: 0;
-    max-width: 42%;
+    max-width: 38%;
     display: flex;
     align-items: center;
     background: #fff;
