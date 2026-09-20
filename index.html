@@ -41,12 +41,12 @@
 
   /* ---------- 1. 상단 배너(홈페이지 히어로 이미지) ---------- */
   .topbar{
-    flex: 0 0 18vh;
-    height: 18vh;
+    flex: 0 0 28vh; /* 높이를 20vh에서 28vh로 확대 */
+    height: 28vh;
     position:relative;
-    background: var(--navy-deep);
+    background: #000;
     line-height:0;
-    padding: 0;
+    padding: 1.5vh 0 0 0; /* 여백을 약간 줄여 이미지 공간 확보 */
     overflow: hidden;
   }
   .topbar img.hero-banner{
@@ -54,44 +54,38 @@
     width:100%;
     height:100%;
     object-fit:cover;
-    object-position:center 30%;
-  }
-  .topbar::after{
-    content:"";
-    position:absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    /* 하단 경계선만 부드럽게 처리 */
-    background: linear-gradient(to top, var(--navy-deep) 0%, transparent 20%);
-    pointer-events:none;
+    object-position:top center; /* 상단 기준 정렬 */
   }
 
-  /* ---------- 2. 영상 존 (3등분 고정 및 경계선 제거) ---------- */
+  /* ---------- 2. 영상 존 (3등분 고정) ---------- */
   .video-zone{
-    flex: 0 0 50vh;
-    height: 50vh;
+    flex: 0 0 42vh; /* 배너가 커진 만큼 영상 영역을 살짝 줄여 밸런스 조정 */
+    height: 42vh;
     min-height:0;
     width:100%;
     position:relative;
     overflow:hidden;
-    background:var(--navy-deep);
+    background:#000;
     transition: none;
   }
-  /* 상하 경계선 제거를 위한 그라데이션 마스크 */
-  .video-zone::before, .video-zone::after {
+  /* 영상 상하단 경계 흐릿하게 처리 (그라데이션 오버레이) */
+  .video-zone::before,
+  .video-zone::after {
     content: "";
     position: absolute;
-    left: 0; right: 0;
-    height: 8vh;
-    z-index: 5;
+    left: 0;
+    width: 100%;
+    height: 3vh; /* 그라데이션 두께 */
+    z-index: 2;
     pointer-events: none;
   }
   .video-zone::before {
     top: 0;
-    background: linear-gradient(to bottom, var(--navy-deep) 0%, transparent 100%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
   }
   .video-zone::after {
     bottom: 0;
-    background: linear-gradient(to top, var(--navy-deep) 0%, transparent 100%);
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
   }
   .video-zone video{
     position:absolute;
@@ -99,13 +93,14 @@
     transform:translate(-50%,-50%);
   }
   .video-zone .bg-blur{
+    display: none;
     width:100%;height:100%;
     object-fit:cover;
     filter:blur(45px) brightness(0.45) saturate(1.2);
   }
   .video-zone .fg-main{
     width:100%;height:100%;
-    object-fit:contain;
+    object-fit:cover; /* contain에서 cover로 변경하여 여백 제거 */
     z-index:1;
   }
   .video-zone .video-caption{
@@ -128,7 +123,7 @@
     background:var(--navy-deep);
   }
   .ticker{
-    flex:0 0 4vh;
+    flex:0 0 3vh;
     background:var(--teal);
     display:flex;
     align-items:center;
@@ -168,8 +163,8 @@
 
   /* 세로형 16:9 TV에서 상단/중앙/하단 콘텐츠를 유연하게 배치 */
   @media (orientation: portrait){
-    .topbar{ flex-basis:18vh; height:18vh; }
-    .video-zone{ flex-basis:50vh; height:50vh; }
+    .topbar{ flex-basis:28vh; height:28vh; }
+    .video-zone{ flex-basis:42vh; height:42vh; }
   }
 
   /* ---------- 4. 배뇨건강 수칙 카드 슬라이드 (자동 전환) ---------- */
@@ -234,47 +229,21 @@
     padding: clamp(4px, 0.65vh, 8px) clamp(4px, 0.7vw, 9px);
     min-width: 0;
     min-height: 0;
+    overflow: hidden;
   }
   .health-card .icon{
     flex: 0 0 auto;
-    font-size: min(3.4vh, 32px);
+    font-size: min(2.2vh, 20px);
+    height: 100%;
+    display: flex;
+    align-items: center;
     line-height: 1;
     filter: grayscale(1) saturate(0.2);
     opacity: 0.9;
   }
   .health-card .txt{ display: flex; flex-direction: column; justify-content: center; gap: clamp(2px, 0.3vh, 4px); min-width: 0; max-height: 100%; overflow: hidden; font-family: Arial, "Malgun Gothic", sans-serif; }
-  .health-card .txt .h{ color: #fff; font-size: clamp(8px, 1.15vh, 14px); font-weight: 700; line-height: 1.25; white-space: normal; word-break: keep-all; overflow-wrap: break-word; }
-  .health-card .txt .d{ color: #aab4c4; font-size: clamp(7px, 0.95vh, 11px); font-weight: 500; line-height: 1.3; word-break: keep-all; overflow-wrap: break-word; }
-
-  /* 좁은 화면에서도 3열을 유지하고 간격만 축소 */
-  @media (max-width: 700px){
-    .info-slide{
-      padding: clamp(5px, 0.8vh, 8px) 2px;
-    }
-    .health-grid{
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      grid-template-rows: repeat(2, minmax(0, 1fr));
-      gap: 3px 2px;
-    }
-    .health-card{
-      flex-direction: column;
-      justify-content: center;
-      gap: 4px;
-      padding: clamp(4px, 0.7vh, 8px) clamp(3px, 0.5vw, 6px);
-      text-align: center;
-    }
-    .health-card .icon{
-      font-size: clamp(12px, 2.2vh, 18px);
-    }
-    .health-card .txt{ width:100%; align-items:center; overflow-wrap:normal; }
-    .health-card .txt .h{
-      font-size: clamp(8px, 0.95vh, 11px);
-    }
-    .health-card .txt .d{
-      font-size: clamp(7px, 0.75vh, 9px);
-      line-height:1.2;
-    }
-  }
+  .health-card .txt .h{ color: #fff; font-size: clamp(10px, 1.4vh, 16px); font-weight: 700; line-height: 1.25; white-space: normal; word-break: keep-all; overflow-wrap: break-word; }
+  .health-card .txt .d{ color: #aab4c4; font-size: clamp(8px, 1.1vh, 13px); font-weight: 500; line-height: 1.3; word-break: keep-all; overflow-wrap: break-word; }
 
   /* ---------- 5. 하단 정보바 (화면 하단 정렬 최적화) ---------- */
   .bottombar {
@@ -295,7 +264,8 @@
     display: flex;
     align-items: center;
     gap: clamp(3px, 0.6vw, 8px);
-    flex: 1 1 0;
+    flex: 0 1 30%;
+    max-width: 30%;
     min-width: 0;
     color: #e9ecf1;
   }
@@ -306,12 +276,12 @@
     flex: 0 1 auto;
     min-width: 0;
   }
-  .info-left .date { font-size: clamp(9px, 1.8vw, 15px); color: #fff; font-weight: 500; white-space: nowrap; }
-  .info-left .day { font-size: clamp(9px, 1.8vw, 15px); color: #fff; font-weight: 700; white-space: nowrap; }
+  .info-left .date { font-size: clamp(8px, 1.4vw, 12px); color: #fff; font-weight: 500; white-space: nowrap; }
+  .info-left .day { font-size: clamp(8px, 1.4vw, 12px); color: #fff; font-weight: 700; white-space: nowrap; }
   .info-left .time-large {
     flex: 0 1 auto;
     min-width: 0;
-    font-size: clamp(16px, 4vw, 34px);
+    font-size: clamp(14px, 3.2vw, 27px);
     font-weight: 200;
     color: #fff;
     font-variant-numeric: tabular-nums;
@@ -387,13 +357,13 @@
     <!-- 2. 영상 존 (3등분 고정 및 경계선 제거) ---------- -->
     <section class="video-zone" id="videoZone">
       <video class="bg-blur" autoplay muted loop playsinline>
-        <source src="../../더 러너.2026.1080p.mp4" type="video/mp4">
+        <source src="../../%EB%8D%94%20%EB%9F%AC%EB%84%88.2026.1080p.mp4" type="video/mp4">
       </video>
       <video class="fg-main" id="bgVideo" autoplay muted loop playsinline>
-        <source src="../../더 러너.2026.1080p.mp4" type="video/mp4">
+        <source src="../../%EB%8D%94%20%EB%9F%AC%EB%84%88.2026.1080p.mp4" type="video/mp4">
       </video>
       <div class="stage-fallback" id="videoFallback" style="display:none;">
-        "더 러너.2026.1080p.mp4" 파일을 확인해 주세요.<br>(16:9 동영상 · 자동재생 · 무한반복)
+        "홍보" 파일을 확인해 주세요.<br>(16:9 동영상 · 자동재생 · 무한반복)
       </div>
     </section>
 
@@ -488,29 +458,29 @@
   const bgVideo = document.getElementById('bgVideo');
   const bgBlur = document.querySelector('.bg-blur');
 
-  function toggleFullScreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => {
-        console.log(`Error attempting to enable full-screen mode: ${err.message}`);
+  function forcePlayVideo() {
+    // muted 속성을 한번 더 강제하여 자동재생 확률을 높입니다.
+    bgVideo.muted = true;
+    const playPromise = bgVideo.play();
+    if (playPromise !== undefined) {
+      playPromise.then(_ => {
+        if (bgBlur && bgBlur.style.display !== 'none') bgBlur.play();
+      }).catch(error => {
+        console.log("Autoplay blocked, waiting for interaction");
       });
     }
   }
 
-  function forcePlayVideo() {
-    toggleFullScreen(); // 클릭 시 전체화면 시도
-    const playPromise = bgVideo.play();
-    if (playPromise !== undefined) {
-      playPromise.then(_ => {
-        if (bgBlur) bgBlur.play();
-      }).catch(error => {
-        console.log("Autoplay blocked, retrying muted...");
-        bgVideo.muted = true;
-        bgVideo.play();
-      });
+  // 전체 화면은 사용자가 화면을 클릭할 때만 실행되도록 분리 (브라우저 보안 정책)
+  document.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {});
     }
-  }
+    bgVideo.play();
+    if (bgBlur && bgBlur.style.display !== 'none') bgBlur.play();
+  });
+
   window.addEventListener('load', forcePlayVideo);
-  document.addEventListener('click', forcePlayVideo); // 사용자 상호작용 시 재시도
 
   // ---- 영상 자동재생 실패 시 안내 ----
   bgVideo.addEventListener('error', () => {
